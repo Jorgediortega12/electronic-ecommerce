@@ -17,6 +17,8 @@ export const createProductServices = async (data: {
   description: string;
   price: number;
   image: string;
+  quantity: number;
+  categoryId: number;
 }) => {
   return await prisma.product.create({
     data

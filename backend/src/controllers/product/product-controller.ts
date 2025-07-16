@@ -55,14 +55,16 @@ export const getProductByIdController = async (
 
 export const createProductController = async (_req: Request, res: Response) => {
   try {
-    const { name, description, price, image } = _req.body;
+    const { name, description, price, image, quantity, categoryId } = _req.body;
     const createProduct = await createProductServices({
       name,
       description,
       price,
-      image
+      image,
+      quantity,
+      categoryId
     });
-    if (!name || !description || !price || !image) {
+    if (!name || !description || !price || !image || !quantity || !categoryId) {
       res.status(404).json({
         message:
           "Cada uno de los campos son obligatorio para poder crear un producto"

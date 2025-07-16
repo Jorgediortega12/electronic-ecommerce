@@ -1,0 +1,102 @@
+{
+    "info": {
+      "name": "Carrito de Compras - ECommerce API",
+      "_postman_id": "c0a1bc57-d123-4d11-a4dd-ecf2a0b12345",
+      "description": "Gestión del carrito de compras para el proyecto de comercio electrónico.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Obtener carrito del usuario",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/cart/7",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "7"]
+          }
+        }
+      },
+      {
+        "name": "Agregar producto al carrito",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 7,\n  \"productId\": 2,\n  \"quantity\": 1\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3001/api/cart/add",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "add"]
+          }
+        }
+      },
+      {
+        "name": "Actualizar cantidad de producto",
+        "request": {
+          "method": "PUT",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"itemId\": 4,\n  \"quantity\": 5\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3001/api/cart/update",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "update"]
+          }
+        }
+      },
+      {
+        "name": "Eliminar producto del carrito",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/cart/remove/4",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "remove", "4"]
+          }
+        }
+      },
+      {
+        "name": "Vaciar carrito del usuario",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/cart/clear/7",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "clear", "7"]
+          }
+        }
+      },
+      {
+        "name": "Calcular total del carrito",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/cart/calculate/7",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "cart", "calculate", "7"]
+          }
+        }
+      }
+    ]
+  }
