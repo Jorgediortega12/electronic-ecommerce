@@ -6,6 +6,7 @@ import getProfileRoute from "./routes/profile/route-profile";
 import productRoutes from "./routes/product/product-route";
 import cartRoutes from "./routes/cart/cart-route";
 import categoriesRoutes from "./routes/category/category-route";
+import orderRoutes from "./routes/order/order-route";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/api/profile", getProfileRoute);
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/category", categoriesRoutes);
+app.use("/api/order", orderRoutes);
 
 app.get("/", (_req, res) => {
   res.send("API funcionando correctamente");

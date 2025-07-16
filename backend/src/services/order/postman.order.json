@@ -1,0 +1,89 @@
+{
+    "info": {
+      "name": "Pedidos - ECommerce API",
+      "_postman_id": "ecom-orders-collection-id",
+      "description": "Rutas para gestionar pedidos en la API de comercio electrónico",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Crear nuevo pedido",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "http://localhost:3001/api/order/create",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "create"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": 1\n}"
+          }
+        }
+      },
+      {
+        "name": "Obtener todos los pedidos",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/order",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order"]
+          }
+        }
+      },
+      {
+        "name": "Obtener pedidos por usuario",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/order/user/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "user", "1"]
+          }
+        }
+      },
+      {
+        "name": "Obtener detalles de un pedido",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/order/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "1"]
+          }
+        }
+      },
+      {
+        "name": "Actualizar estado del pedido",
+        "request": {
+          "method": "PUT",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "http://localhost:3001/api/order/update?orderId=1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "update"],
+            "query": [{ "key": "orderId", "value": "1" }]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"status\": \"SHIPPED\"\n}"
+          }
+        }
+      }
+    ]
+  }
