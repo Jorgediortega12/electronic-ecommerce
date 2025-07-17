@@ -53,8 +53,12 @@ export const getAllOrdersService = async () => {
 };
 
 export const getOrdersByUserService = async (userId: number) => {
+  if (!userId || typeof userId !== "number" || isNaN(userId)) {
+    throw new Error("ID de usuario inválido");
+  }
+
   return await prisma.order.findMany({
-    where: { userId },
+    where: { userId: userId },
     include: {
       items: {
         include: {
@@ -69,6 +73,10 @@ export const getOrdersByUserService = async (userId: number) => {
 };
 
 export const getOrderByIdService = async (orderId: number) => {
+  if (!orderId || typeof orderId !== "number" || isNaN(orderId)) {
+    throw new Error("ID de orden inválido");
+  }
+
   return await prisma.order.findUnique({
     where: { id: orderId },
     include: {
@@ -86,8 +94,19 @@ export const updateOrderStatusService = async (
   orderId: number,
   status: OrderStatus
 ) => {
+  if (!orderId || typeof orderId !== "number" || isNaN(orderId)) {
+    throw new Error("ID de orden inválido");
+  }
+
   return await prisma.order.update({
     where: { id: orderId },
     data: { status }
+  });
+};
+
+export const getOrderStatusService = async (orderId: number) => {
+  return await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { id: true, status: true, updatedAt: true }
   });
 };

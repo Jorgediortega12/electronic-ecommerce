@@ -5,6 +5,7 @@ import {
   getAllOrdersService,
   getOrderByIdService,
   getOrdersByUserService,
+  getOrderStatusService,
   updateOrderStatusService
 } from "../../services/order/order-services";
 
@@ -17,12 +18,19 @@ export const createOrderController = async (req: Request, res: Response) => {
         .json({ message: "El ID de la orden debe ser obligatorio" });
     }
     const createOrder = await createOrderServices(userId);
+    if (!createOrder) {
+      return res.status(400).json({
+        message:
+          "No se pudo crear la orden. Asegúrate de que el carrito no esté vacío."
+      });
+    }
     res.status(200).json({ createOrder });
   } catch (error: any) {
     console.error("Error a la hora de crear un nueva orden", error);
-    res
-      .status(500)
-      .json({ message: "Error a la hora de poder crear una order", error });
+    res.status(500).json({
+      message: "Error a la hora de poder crear una order",
+      error: error
+    });
   }
 };
 
@@ -30,7 +38,9 @@ export const getAllOrdersController = async (req: Request, res: Response) => {
   try {
     const getAllOrders = await getAllOrdersService();
     if (!getAllOrders) {
-      res.status(400).json({ message: "Error al obtener todas las ordenes" });
+      return res
+        .status(400)
+        .json({ message: "Error al obtener todas las ordenes" });
     }
     res.status(200).json({ getAllOrders });
   } catch (error: any) {
@@ -46,11 +56,9 @@ export const getOrdersByUserController = async (
   res: Response
 ) => {
   try {
-    const userId = Number(req.params.userId);
-    if (!userId) {
-      res
-        .status(400)
-        .json({ message: "Error al poder obtener la orden del usuario" });
+    const userId = Number(req.params.id);
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "ID de usuario inválido" });
     }
     const getOrdersByUser = await getOrdersByUserService(userId);
     res.status(200).json({ getOrdersByUser });
@@ -65,9 +73,9 @@ export const getOrdersByUserController = async (
 
 export const getOrderByIdController = async (req: Request, res: Response) => {
   try {
-    const orderId = Number(req.params.userId);
+    const orderId = Number(req.params.id);
     if (!orderId) {
-      res.status(400).json({ message: "Error al obtener la orden" });
+      return res.status(400).json({ message: "ID de orden inválido" });
     }
     const getOrderById = await getOrderByIdService(orderId);
     res.status(200).json({ getOrderById });
@@ -107,5 +115,50 @@ export const updateOrdeStatusController = async (
     return res
       .status(500)
       .json({ message: "Error al actualizar el estado del pedido", error });
+  }
+};
+
+export const getOrderStatusController = async (req: Request, res: Response) => {
+  try {
+    const orderId = Number(req.params.orderId);
+    if (isNaN(orderId)) {
+      return res.status(400).json({ message: "ID de orden inválido" });
+    }
+    const getOrderStatus = await getOrderStatusService(orderId);
+    res.status(200).json({ getOrderStatus });
+  } catch (error: any) {
+    console.error("Error a la hora de mostrar el estado de la orden", error);
+    res.status(500).json({
+      message: "Error al mostrar el estado de la orden solicitada",
+      error
+    });
+  }
+};
+
+export const getOrderHistoryController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = Number(req.params.id);
+    const { status } = req.query;
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "ID de usuario inválido" });
+    }
+
+    const orders = await getOrdersByUserService(userId);
+
+    const filteredOrders = status
+      ? orders.filter((order) => order.status === status)
+      : orders;
+
+    res.status(200).json({ history: filteredOrders });
+  } catch (error: any) {
+    console.error("Error al obtener historial de pedidos", error);
+    res.status(500).json({
+      message: "Error al obtener el historial de pedidos",
+      error
+    });
   }
 };

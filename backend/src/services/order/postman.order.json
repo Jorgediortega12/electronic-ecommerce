@@ -12,11 +12,11 @@
           "method": "POST",
           "header": [{ "key": "Content-Type", "value": "application/json" }],
           "url": {
-            "raw": "http://localhost:3001/api/order/create",
+            "raw": "http://localhost:3001/api/order",
             "protocol": "http",
             "host": ["localhost"],
             "port": "3001",
-            "path": ["api", "order", "create"]
+            "path": ["api", "order"]
           },
           "body": {
             "mode": "raw",
@@ -58,11 +58,11 @@
           "method": "GET",
           "header": [],
           "url": {
-            "raw": "http://localhost:3001/api/order/1",
+            "raw": "http://localhost:3001/api/order/:id",
             "protocol": "http",
             "host": ["localhost"],
             "port": "3001",
-            "path": ["api", "order", "1"]
+            "path": ["api", "order", ":id"]
           }
         }
       },
@@ -72,16 +72,29 @@
           "method": "PUT",
           "header": [{ "key": "Content-Type", "value": "application/json" }],
           "url": {
-            "raw": "http://localhost:3001/api/order/update?orderId=1",
+            "raw": "http://localhost:3001/api/order/1/status",
             "protocol": "http",
             "host": ["localhost"],
             "port": "3001",
-            "path": ["api", "order", "update"],
-            "query": [{ "key": "orderId", "value": "1" }]
+            "path": ["api", "order", "1", "status"]
           },
           "body": {
             "mode": "raw",
             "raw": "{\n  \"status\": \"SHIPPED\"\n}"
+          }
+        }
+      },
+      {
+        "name": "Ver estado del pedido",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/order/1/status",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "1", "status"]
           }
         }
       }
