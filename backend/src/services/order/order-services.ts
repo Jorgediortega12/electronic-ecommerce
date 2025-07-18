@@ -1,4 +1,5 @@
 import { PrismaClient, OrderStatus } from "@prisma/client";
+import { sendOrderConfirmationEmail } from "../../utils/mailer";
 
 const prisma = new PrismaClient();
 
@@ -104,9 +105,20 @@ export const updateOrderStatusService = async (
   });
 };
 
-export const getOrderStatusService = async (orderId: number) => {
-  return await prisma.order.findUnique({
-    where: { id: orderId },
-    select: { id: true, status: true, updatedAt: true }
-  });
+export const notifyOrderConfirmationService = async ({
+  userEmail,
+  orderId,
+  total
+}: {
+  userEmail: string;
+  orderId: number;
+  total: number;
+}) => {
+  try {
+    await sendOrderConfirmationEmail(userEmail, orderId, total);
+    return { success: true };
+  } catch (error) {
+    console.error("Error al enviar confirmación de pedido:", error);
+    return { success: false, error };
+  }
 };

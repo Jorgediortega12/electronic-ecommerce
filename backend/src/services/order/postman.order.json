@@ -97,6 +97,38 @@
             "path": ["api", "order", "1", "status"]
           }
         }
+      },
+      {
+        "name": "Eliminar pedido",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3001/api/order/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "1"]
+          }
+        }
+      },
+      {
+        "name": "Confirmación de notificación",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "http://localhost:3001/api/order/notification-confirmation",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "order", "notification-confirmation"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"orderId\": 1,\n  \"confirmation\": true\n}"
+          }
+        }
       }
     ]
   }

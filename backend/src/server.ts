@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
 import authRoutes from "./routes/auth/route-auth";
 import getProfileRoute from "./routes/profile/route-profile";
 import productRoutes from "./routes/product/product-route";
@@ -8,6 +9,7 @@ import cartRoutes from "./routes/cart/cart-route";
 import categoriesRoutes from "./routes/category/category-route";
 import orderRoutes from "./routes/order/order-route";
 import paymentRoutes from "./routes/payment/payment-routes";
+import notificationRoutes from "./routes/notification/notification-routes";
 
 dotenv.config();
 
@@ -24,6 +26,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/category", categoriesRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (_req, res) => {
   res.send("API funcionando correctamente");

@@ -5,7 +5,7 @@ import {
   getAllOrdersService,
   getOrderByIdService,
   getOrdersByUserService,
-  getOrderStatusService,
+  notifyOrderConfirmationService,
   updateOrderStatusService
 } from "../../services/order/order-services";
 
@@ -24,6 +24,7 @@ export const createOrderController = async (req: Request, res: Response) => {
           "No se pudo crear la orden. Asegúrate de que el carrito no esté vacío."
       });
     }
+
     res.status(200).json({ createOrder });
   } catch (error: any) {
     console.error("Error a la hora de crear un nueva orden", error);
@@ -124,8 +125,8 @@ export const getOrderStatusController = async (req: Request, res: Response) => {
     if (isNaN(orderId)) {
       return res.status(400).json({ message: "ID de orden inválido" });
     }
-    const getOrderStatus = await getOrderStatusService(orderId);
-    res.status(200).json({ getOrderStatus });
+
+    res.status(200).json({ orderId });
   } catch (error: any) {
     console.error("Error a la hora de mostrar el estado de la orden", error);
     res.status(500).json({
@@ -158,6 +159,56 @@ export const getOrderHistoryController = async (
     console.error("Error al obtener historial de pedidos", error);
     res.status(500).json({
       message: "Error al obtener el historial de pedidos",
+      error
+    });
+  }
+};
+
+export const notifyOrderConfirmationController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { orderId, total, userEmail } = req.body;
+
+    if (typeof orderId !== "number" || isNaN(orderId)) {
+      return res.status(400).json({
+        message:
+          "El ID para la confirmación del email es obligatorio y debe ser un número"
+      });
+    }
+
+    if (typeof total !== "number" || isNaN(total)) {
+      return res.status(400).json({
+        message: "El total del pedido es obligatorio y debe ser un número"
+      });
+    }
+
+    if (!userEmail || typeof userEmail !== "string") {
+      return res.status(400).json({
+        message:
+          "El correo del usuario para la confirmación del pedido es obligatorio"
+      });
+    }
+
+    const notifyOrderConfirmation = await notifyOrderConfirmationService({
+      orderId,
+      total,
+      userEmail
+    });
+
+    if (!notifyOrderConfirmation.success) {
+      return res.status(500).json({
+        message: "No se pudo enviar la confirmación del pedido",
+        error: notifyOrderConfirmation.error
+      });
+    }
+
+    return res.status(200).json({ notifyOrderConfirmation });
+  } catch (error) {
+    console.error("Error a la hora de confirmar el correo electrónico", error);
+    return res.status(500).json({
+      message: "Error interno a la hora de la confirmación",
       error
     });
   }

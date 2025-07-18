@@ -23,3 +23,30 @@ export const sendVerificationEmail = async (to: string, token: string) => {
     `
   });
 };
+
+export const sendOrderConfirmationEmail = async (
+  to: string,
+  orderId: number,
+  total: number
+) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: Number(process.env.EMAIL_PORT),
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  await transporter.sendMail({
+    from: `"Tu Tienda" <${process.env.EMAIL_USER}>`,
+    to,
+    subject: `Confirmación de pedido #${orderId}`,
+    html: `
+      <h2>Gracias por tu compra</h2>
+      <p>Tu pedido con ID <strong>${orderId}</strong> ha sido confirmado.</p>
+      <p>Total: <strong>$${total}</strong></p>
+      <p>Pronto recibirás actualizaciones sobre el envío.</p>
+    `
+  });
+};
