@@ -28,7 +28,9 @@ export default function OrderCard({ order, userEmail }: Props) {
       <p className="text-sm text-gray-600">
         Fecha: {new Date(order.createdAt).toLocaleDateString()}
       </p>
-      <div className="text-sm text-gray-700">
+
+      {/*Mostrar productos mas adelante cuando se conecte al backend directamente */}
+      {/* <div className="text-sm text-gray-700">
         <p className="font-medium mb-1">Productos:</p>
         <ul className="list-disc list-inside">
           {Array.isArray(order.products) && order.products.length > 0 ? (
@@ -43,7 +45,7 @@ export default function OrderCard({ order, userEmail }: Props) {
             <p className="text-gray-500">No hay productos en esta orden.</p>
           )}
         </ul>
-      </div>
+      </div> */}
 
       <ConfirmButton
         orderId={order.id}

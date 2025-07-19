@@ -1,4 +1,4 @@
-import OrderHistoryPage from "./orders/history/page";
+import LoginPage from "./auth/login/page";
 
 export default function Home() {
   return (
@@ -6,7 +6,7 @@ export default function Home() {
       <div className="max-w-md w-full">
         <h1 className="text-2xl font-bold mb-10 text-center text-black">
           Bienvendio a Electronic - Ecommerce
-          <OrderHistoryPage />
+          <LoginPage />
         </h1>
       </div>
     </main>

@@ -1,4 +1,4 @@
-import { notifyOrder } from "@/api/orderServices";
+import { notifyOrder } from "@/api/orderApi";
 import { useState } from "react";
 
 interface Props {

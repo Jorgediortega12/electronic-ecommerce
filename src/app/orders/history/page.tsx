@@ -1,9 +1,8 @@
-import { getOrdersByUser } from "@/api/orderServices";
+import { getOrdersByUser } from "@/api/orderApi";
 import OrderCard from "@/components/orders/OrdersCard";
 
-
 export default async function OrderHistoryPage() {
-  const userId = 1; 
+  const userId = 1;
   const userEmail = "correo@correo.com";
 
   const { getOrdersByUser: orders } = await getOrdersByUser(userId);

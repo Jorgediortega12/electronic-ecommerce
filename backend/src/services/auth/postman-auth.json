@@ -1,0 +1,47 @@
+{
+    "info": {
+      "name": "Auth Services",
+      "_postman_id": "auth-collection-id",
+      "description": "Colección de rutas de autenticación",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Registro de usuario",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "http://localhost:3001/api/auth/register",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "auth", "register"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Usuario Ejemplo\",\n  \"email\": \"usuario@correo.com\",\n  \"password\": \"123456\"\n}"
+          }
+        }
+      },
+      {
+        "name": "Inicio de sesión",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": {
+            "raw": "http://localhost:3001/api/auth/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3001",
+            "path": ["api", "auth", "login"]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"usuario@correo.com\",\n  \"password\": \"123456\"\n}"
+          }
+        }
+      }
+    ]
+  }
+  
