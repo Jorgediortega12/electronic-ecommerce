@@ -4,6 +4,7 @@ import {
   createOrderServices,
   getAllOrdersService,
   getOrderByIdService,
+  getOrderHistoryService,
   getOrdersByUserService,
   notifyOrderConfirmationService,
   updateOrderStatusService
@@ -12,10 +13,10 @@ import {
 export const createOrderController = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.body.userId);
-    if (!userId) {
+    if (isNaN(userId) || userId <= 0) {
       return res
         .status(400)
-        .json({ message: "El ID de la orden debe ser obligatorio" });
+        .json({ message: "El ID del usuario es obligatorio" });
     }
     const createOrder = await createOrderServices(userId);
     if (!createOrder) {
@@ -58,7 +59,7 @@ export const getOrdersByUserController = async (
 ) => {
   try {
     const userId = Number(req.params.id);
-    if (isNaN(userId)) {
+    if (isNaN(userId) || userId <= 0) {
       return res.status(400).json({ message: "ID de usuario inválido" });
     }
     const getOrdersByUser = await getOrdersByUserService(userId);
@@ -75,7 +76,7 @@ export const getOrdersByUserController = async (
 export const getOrderByIdController = async (req: Request, res: Response) => {
   try {
     const orderId = Number(req.params.id);
-    if (!orderId) {
+    if (isNaN(orderId) || orderId <= 0) {
       return res.status(400).json({ message: "ID de orden inválido" });
     }
     const getOrderById = await getOrderByIdService(orderId);
@@ -94,9 +95,14 @@ export const updateOrdeStatusController = async (
 ) => {
   try {
     const orderId = Number(req.params.orderId);
+
+    if (isNaN(orderId) || orderId <= 0) {
+      return res.status(400).json({ message: "ID de orden inválido" });
+    }
+
     const { status } = req.body;
 
-    if (!orderId || !status) {
+    if (!status) {
       return res.status(400).json({
         message: "El ID del pedido y el nuevo estado son obligatorios"
       });
@@ -104,6 +110,11 @@ export const updateOrdeStatusController = async (
 
     if (!Object.values(OrderStatus).includes(status)) {
       return res.status(400).json({ message: "Estado no válido" });
+    }
+
+    const existingOrder = await getOrderByIdService(orderId);
+    if (!existingOrder) {
+      return res.status(404).json({ message: "La orden no existe" });
     }
 
     const updatedOrder = await updateOrderStatusService(
@@ -122,11 +133,16 @@ export const updateOrdeStatusController = async (
 export const getOrderStatusController = async (req: Request, res: Response) => {
   try {
     const orderId = Number(req.params.orderId);
-    if (isNaN(orderId)) {
+    if (isNaN(orderId) || orderId <= 0) {
       return res.status(400).json({ message: "ID de orden inválido" });
     }
 
-    res.status(200).json({ orderId });
+    const order = await getOrderByIdService(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "La orden no existe" });
+    }
+
+    res.status(200).json({ status: order.status });
   } catch (error: any) {
     console.error("Error a la hora de mostrar el estado de la orden", error);
     res.status(500).json({
@@ -144,11 +160,11 @@ export const getOrderHistoryController = async (
     const userId = Number(req.params.id);
     const { status } = req.query;
 
-    if (isNaN(userId)) {
+    if (isNaN(userId) || userId <= 0) {
       return res.status(400).json({ message: "ID de usuario inválido" });
     }
 
-    const orders = await getOrdersByUserService(userId);
+    const orders = await getOrderHistoryService(userId);
 
     const filteredOrders = status
       ? orders.filter((order) => order.status === status)
@@ -171,7 +187,7 @@ export const notifyOrderConfirmationController = async (
   try {
     const { orderId, total, userEmail } = req.body;
 
-    if (typeof orderId !== "number" || isNaN(orderId)) {
+    if (typeof orderId !== "number" || isNaN(orderId) || orderId <= 0) {
       return res.status(400).json({
         message:
           "El ID para la confirmación del email es obligatorio y debe ser un número"
@@ -184,10 +200,21 @@ export const notifyOrderConfirmationController = async (
       });
     }
 
-    if (!userEmail || typeof userEmail !== "string") {
+    if (
+      !userEmail ||
+      typeof userEmail !== "string" ||
+      !userEmail.includes("@")
+    ) {
       return res.status(400).json({
         message:
-          "El correo del usuario para la confirmación del pedido es obligatorio"
+          "Se requiere un correo electrónico válido para la confirmación del pedido"
+      });
+    }
+
+    const orderExists = await getOrderByIdService(orderId);
+    if (!orderExists) {
+      return res.status(404).json({
+        message: "No se encontró la orden con el ID proporcionado"
       });
     }
 

@@ -29,49 +29,92 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 bg-white shadow-md p-6 rounded">
-      <h1 className="text-2xl font-bold mb-4">Iniciar sesión</h1>
-      {error && <p className="text-red-500 mb-2">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Correo"
-          className="w-full border p-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Contraseña"
-            className="w-full border p-2 rounded pr-10"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-          >
-            {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-          </button>
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="max-w-md w-full">
+        <div className="bg-slate-50 shadow-lg shadow-blue-100/50 border border-blue-100 p-8 rounded-2xl">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold text-slate-800">
+              Bienvenido
+            </h1>
+            <p className="text-slate-500">Inicia sesión en tu cuenta</p>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Correo electrónico
+              </label>
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                className="w-full bg-white border border-slate-200 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 outline-none px-4 py-3 rounded-xl text-slate-700 placeholder-slate-400 transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Contraseña
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="w-full bg-white border border-slate-200 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 outline-none px-4 py-3 pr-12 rounded-xl text-slate-700 placeholder-slate-400 transition-colors"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors p-1"
+                >
+                  {showPassword ? (
+                    <AiFillEyeInvisible size={20} />
+                  ) : (
+                    <AiFillEye size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                Iniciar sesión
+              </button>
+
+              <button
+                onClick={() => router.push("/auth/register")}
+                type="button"
+                className="w-full bg-white border border-blue-200 text-blue-600 font-medium py-3 rounded-xl hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
+              >
+                Crear cuenta nueva
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-slate-400 text-sm">
+              ¿Olvidaste tu contraseña?{" "}
+              <button className="text-blue-500 hover:text-blue-600 font-medium">
+                Recuperar
+              </button>
+            </p>
+          </div>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Ingresar
-        </button>
-        <button
-          onClick={() => router.push("/auth/register")}
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Ir al registro
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

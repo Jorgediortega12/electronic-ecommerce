@@ -91,6 +91,26 @@ export const getOrderByIdService = async (orderId: number) => {
   });
 };
 
+export const getOrderHistoryService = async (userId: number) => {
+  if (!userId || typeof userId !== "number" || isNaN(userId)) {
+    throw new Error("ID de usuario inválido");
+  }
+
+  return await prisma.order.findMany({
+    where: { userId },
+    include: {
+      items: {
+        include: {
+          product: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
+};
+
 export const updateOrderStatusService = async (
   orderId: number,
   status: OrderStatus

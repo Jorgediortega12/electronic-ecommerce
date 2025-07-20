@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL_AUTH
 
 export interface LoginData {
   email: string;
@@ -6,7 +6,7 @@ export interface LoginData {
 }
 
 export const loginUser = async ({ email, password }: LoginData) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
+  const res = await fetch(`${API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
@@ -27,7 +27,7 @@ export interface RegisterData {
 }
 
 export const registerUser = async ({ name, email, password }: RegisterData) => {
-  const res = await fetch(`${API_URL}/auth/register`, {
+  const res = await fetch(`${API_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password })

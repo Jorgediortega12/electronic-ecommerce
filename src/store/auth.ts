@@ -9,8 +9,8 @@ interface AuthStore {
   user: User | null;
   token: string | null;
   login: (user: User, token: string) => void;
-  logout: () => void;
   register: (user: User, token: string) => void;
+  logout: () => void;
 }
 
 export const useAuth = create<AuthStore>((set) => ({
