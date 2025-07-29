@@ -1,12 +1,10 @@
-import LoginPage from "./auth/login/page";
+import LoginPage from "./login/page";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-12">
+    <main className="h-screen flex items-center justify-center">
       <div className="w-full max-w-md">
-        <div className="text-center">
-          <LoginPage />
-        </div>
+        <LoginPage />
       </div>
     </main>
   );

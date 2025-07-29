@@ -13,7 +13,7 @@ export const registerUser = async (
   const hashedPassword = await hashPassword(password);
   const verificationToken = crypto.randomBytes(32).toString("hex");
   console.log("Token de verificación para el usuario:", verificationToken);
-  
+
   return await prisma.user.create({
     data: {
       name,
@@ -31,6 +31,10 @@ export const loginUser = async (email: string, password: string) => {
 
   if (!user.emailVerified) {
     throw new Error("Tu correo no ha sido verificado");
+  }
+
+  if (!user.password) {
+    throw new Error("El usuario esta registrado con Google o Github");
   }
 
   const match = await comparePassword(password, user.password);

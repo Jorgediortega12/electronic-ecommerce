@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { registerUser } from "@/api/authApi";
 import { useAuth } from "@/store/auth";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import toaster from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,12 +22,30 @@ export default function RegisterPage() {
     try {
       const { user, token } = await registerUser({ name, email, password });
       register(user, token);
-      alert("El registro fue exitoso");
-      router.push("/");
+      toaster.success("El usuario se creó Exitosamente");
     } catch (error: any) {
+      toaster.error(error.message || "Error al registrar el usuario");
       setError(error.message);
     }
   };
+
+  // const handleGoogleRegister = async () => {
+  //   try {
+  //     // Implementar lógica de registro con Google
+  //     toaster.success("Registrando con Google...");
+  //   } catch (err: any) {
+  //     toaster.error("Error al registrarse con Google");
+  //   }
+  // };
+
+  // const handleGithubRegister = async () => {
+  //   try {
+  //     // Implementar lógica de registro con GitHub
+  //     toaster.success("Registrando con GitHub...");
+  //   } catch (err: any) {
+  //     toaster.error("Error al registrarse con GitHub");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
@@ -46,6 +65,39 @@ export default function RegisterPage() {
               {error}
             </div>
           )}
+
+          {/* Botones OAuth */}
+          {/* <div className="space-y-3 mb-6">
+            <button
+              onClick={handleGoogleRegister}
+              type="button"
+              className="w-full bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-medium py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 hover:bg-slate-50 cursor-pointer"
+            >
+              <FaGoogle className="text-red-500" size={20} />
+              Registrarse con Google
+            </button>
+
+            <button
+              onClick={handleGithubRegister}
+              type="button"
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer"
+            >
+              <FaGithub size={20} />
+              Registrarse con GitHub
+            </button>
+          </div> */}
+
+          {/* Divisor */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-slate-50 px-4 text-slate-500">
+                Registrate
+              </span>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -125,7 +177,7 @@ export default function RegisterPage() {
             <div className="space-y-3">
               <button
                 type="submit"
-                className="w-full transform rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 py-3 font-medium text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-600 hover:to-blue-700 hover:shadow-lg"
+                className="w-full transform rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 py-3 font-medium text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-600 hover:to-blue-700 hover:shadow-lg cursor-pointer"
               >
                 Crear cuenta
               </button>
@@ -133,7 +185,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => router.push("/")}
-                className="w-full rounded-xl border border-blue-200 bg-white py-3 font-medium text-blue-600 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50"
+                className="w-full rounded-xl border border-blue-200 bg-white py-3 font-medium text-blue-600 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer"
               >
                 Ya tengo cuenta
               </button>
